@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/zabir-aa/tinyapp/issues"
   },
-  "homepage": "https://github.com/zabir-aa/tinyapp#readme"
+  "homepage": "https://github.com/zabir-aa/tinyapp#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
