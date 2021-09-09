@@ -7,13 +7,13 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 app.set("view engine", "ejs");
 
-function generateRandomString() {
+const generateRandomString = function() {
   let random = "";
   for (let i = 0; i < 6; i++) {
     random += (Math.floor((Math.random() * 9) + 1)).toString();
   }
   return random;
-}
+};
 
 let urlDatabase = {
   "9sm5xK": "http://www.google.com",
@@ -52,19 +52,21 @@ app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
 });
 
-app.get("/set", (req, res) => {
-  const a = 1;
-  res.send(`a = ${a}`);
-});
- 
-app.get("/fetch", (req, res) => {
-  res.send(`a = ${a}`);
-});
 
 app.post("/urls", (req, res) => {
   console.log(req.body);  // Log the POST request body to the console
-  let shortURL = generateRandomString()
+  let shortURL = generateRandomString();
   urlDatabase[shortURL] = req.body.longURL;
   console.log(urlDatabase);
-  res.redirect(`/urls/${shortURL}`);      // Respond with 'Ok' (we will replace this)
+  res.redirect(`/urls/${shortURL}`);
 });
+
+app.post("/urls/:shortURL/delete", (req, res) => {
+  console.log("DEL req: ",req.params);  // Log the POST request body to the console
+  
+  let deleted = req.params.shortURL;
+  delete urlDatabase[deleted];
+  console.log(urlDatabase);
+  res.redirect("/urls");
+});
+
