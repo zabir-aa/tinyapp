@@ -57,8 +57,8 @@ app.get("/fetch", (req, res) => {
 
 app.post("/urls", (req, res) => {
   console.log(req.body);  // Log the POST request body to the console
-  let random = generateRandomString()
-  urlDatabase[random] = req.body.longURL;
+  let shortURL = generateRandomString()
+  urlDatabase[shortURL] = req.body.longURL;
   console.log(urlDatabase);
-  res.send(`/urls/${random}`);      // Respond with 'Ok' (we will replace this)
+  res.redirect(`/urls/${shortURL}`);      // Respond with 'Ok' (we will replace this)
 });
