@@ -8,14 +8,16 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 
 function generateRandomString() {
-  let random = Math.floor((Math.random() * 999999) + 1);
+  let random = "";
+  for (let i = 0; i < 6; i++) {
+    random += (Math.floor((Math.random() * 9) + 1)).toString();
+  }
   return random;
 }
-console.log(generateRandomString());
 
-const urlDatabase = {
+let urlDatabase = {
+  "9sm5xK": "http://www.google.com",
   "b2xVn2": "http://www.lighthouselabs.ca",
-  "9sm5xK": "http://www.google.com"
 };
 
 app.get("/", (req, res) => {
@@ -55,5 +57,8 @@ app.get("/fetch", (req, res) => {
 
 app.post("/urls", (req, res) => {
   console.log(req.body);  // Log the POST request body to the console
-  res.send("Ok");         // Respond with 'Ok' (we will replace this)
+  let random = generateRandomString()
+  urlDatabase[random] = req.body.longURL;
+  console.log(urlDatabase);
+  res.send(`/urls/${random}`);      // Respond with 'Ok' (we will replace this)
 });
