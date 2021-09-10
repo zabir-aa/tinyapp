@@ -52,21 +52,31 @@ app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
 });
 
+app.post("/u/:shortURL", (req, res) => {
+  const shortURL = req.params.shortURL;
+  res.redirect(`/urls/${shortURL}`);
+});
 
 app.post("/urls", (req, res) => {
   console.log(req.body);  // Log the POST request body to the console
   let shortURL = generateRandomString();
   urlDatabase[shortURL] = req.body.longURL;
   console.log(urlDatabase);
-  res.redirect(`/urls/${shortURL}`);
+  res.redirect(`/urls`);
+});
+
+app.post("/urls/:shortURL/edit", (req, res) => {
+  console.log("EDIT req: ",req.params);  // Log the POST request body to the console
+  let toEdit = req.params.shortURL;
+  urlDatabase[toEdit] = req.body.longURL;
+  console.log(urlDatabase);
+  res.redirect(`/urls/`);
 });
 
 app.post("/urls/:shortURL/delete", (req, res) => {
   console.log("DEL req: ",req.params);  // Log the POST request body to the console
-  
-  let deleted = req.params.shortURL;
-  delete urlDatabase[deleted];
-  console.log(urlDatabase);
+  let toDelete = req.params.shortURL;
+  delete urlDatabase[toDelete];
   res.redirect("/urls");
 });
 
