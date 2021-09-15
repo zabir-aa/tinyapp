@@ -33,6 +33,7 @@ let urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
 };
 
+/*
 app.get("/", (req, res) => {
   res.send("Hello!");
 });
@@ -40,6 +41,7 @@ app.get("/", (req, res) => {
 app.get("/hello", (req, res) => {
   res.send("<html><body>Hello <b>World</b></body></html>\n");
 });
+*/
 
 app.get("/urls", (req, res) => {
   const templateVars = { 
@@ -51,8 +53,8 @@ app.get("/urls", (req, res) => {
 
 app.get("/urls/new", (req, res) => {
   const templateVars = { 
-    username: req.cookies["username"]
-  };
+    user: users[req.cookies["user_id"]],
+    urls: urlDatabase };
   res.render("urls_new", templateVars);
 });
 
@@ -67,7 +69,7 @@ app.get("/urls/:shortURL", (req, res) => {
   const templateVars = {
     shortURL: req.params.shortURL,
     longURL: urlDatabase[req.params.shortURL],
-    username: req.cookies["username"]
+    user: users[req.cookies["user_id"]],
   };
   res.render("urls_show", templateVars);
 });
