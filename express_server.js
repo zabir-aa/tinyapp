@@ -43,8 +43,9 @@ app.get("/hello", (req, res) => {
 
 app.get("/urls", (req, res) => {
   const templateVars = { 
-    username: req.cookies["username"],
+    user: users[req.cookies["user_id"]],
     urls: urlDatabase };
+  console.log("PRINTING templateVars: \n", templateVars)
   res.render("urls_index", templateVars);
 });
 
@@ -56,9 +57,9 @@ app.get("/urls/new", (req, res) => {
 });
 
 app.get("/register", (req, res) => {
-  const templateVars = {
-    username: req.cookies["username"]
-  };
+  const templateVars = { 
+    user: users[req.cookies["user_id"]],
+    urls: urlDatabase };
   res.render("user_register", templateVars);
 });
 
@@ -99,8 +100,9 @@ app.post("/register", (req, res) => {
     email: req.body.email, 
     password: req.body.password
   }
-  console.log(users);
+  console.log("PRINTING USERS:\n", users);
   res.cookie("user_id", userID)
+  console.log("PRINTING REQ.COOKIES:\n",req.cookies)
   res.redirect(`/urls`);
 });
 
