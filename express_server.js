@@ -142,7 +142,11 @@ app.post("/urls/:shortURL/delete", (req, res) => {
 });
 
 app.post("/login", (req, res) => {
-  res.cookie("username", req.body.username);
+  for (let user in users) {
+    if (users[user]["email"] === (req.body.email) && users[user]["password"] === (req.body.password)) {
+      res.cookie(users[user]["user_id"])
+    }
+  }
   res.redirect("/urls");
 });
 
