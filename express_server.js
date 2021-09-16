@@ -104,6 +104,13 @@ app.post("/urls", (req, res) => {
   res.redirect(`/urls`);
 });
 
+const  matchID = function (req, res, userObject) {
+  for (let user in userObject) {
+    if (userObject[user]["email"] === (req.body.email) && userObject[user]["password"] === (req.body.password)) {
+      return userObject[user]["user_id"];
+    }
+  }
+};
 app.post("/register", (req, res) => {
   let entryValidity = true;
   for (let user in users) {
@@ -151,6 +158,6 @@ app.post("/login", (req, res) => {
 });
 
 app.post("/logout", (req, res) => {
-  res.clearCookie("username");
+  res.clearCookie("user_id");
   res.redirect("/urls");
 });
