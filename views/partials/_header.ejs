@@ -17,9 +17,10 @@
           <button type="submit" class="btn btn-danger">log out</button>
         </form>
         <% } else { %>
-        <form class="form-inline ml-auto" action="/login" method="POST">
-          <label for="user">Enter username:</label>
-          <input class="form" type="text" name="username" placeholder="username" style="width: 300px; margin: 1em">
+        <form class="form-inline ml-auto" action="/register" method="GET">
+          <button type="submit" class="btn btn-primary">Register</button>
+        </form>
+        <form class="form-inline ml-3" action="/login" method="GET">
           <button type="submit" class="btn btn-primary">Sign in</button>
         </form>
         <% } %>
