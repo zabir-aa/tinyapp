@@ -96,16 +96,27 @@ app.post("/urls", (req, res) => {
 });
 
 app.post("/register", (req, res) => {
-  let userID = generateRandomString();
-  users[userID] = {
+  let entryValidity = true;
+  for (let user in users) {
+    if (users[user]["email"] === (req.body.email) || req.body.email === "" || req.body.password === "") {
+      entryValidity = false;
+    }
+  }
+  console.log("VALIDITY: ", entryValidity)
+  if (entryValidity === false) {
+    res.status(400).send();
+  } else {
+    let userID = generateRandomString();
+    users[userID] = {
     id: userID, 
     email: req.body.email, 
     password: req.body.password
   }
-  console.log("PRINTING USERS:\n", users);
+  //console.log("PRINTING USERS:\n", users);
   res.cookie("user_id", userID)
-  console.log("PRINTING REQ.COOKIES:\n",req.cookies)
+  //console.log("PRINTING REQ.COOKIES:\n",req.cookies)
   res.redirect(`/urls`);
+  }
 });
 
 app.post("/urls/:shortURL/edit", (req, res) => {
