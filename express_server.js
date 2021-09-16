@@ -65,6 +65,15 @@ app.get("/register", (req, res) => {
   res.render("user_register", templateVars);
 });
 
+
+app.get("/login", (req, res) => {
+  const templateVars = { 
+    user: users[req.cookies["user_id"]],
+    urls: urlDatabase };
+  res.render("user_login", templateVars);
+});
+
+
 app.get("/urls/:shortURL", (req, res) => {
   const templateVars = {
     shortURL: req.params.shortURL,
