@@ -151,13 +151,17 @@ app.post("/urls/:shortURL/delete", (req, res) => {
 app.post("/login", (req, res) => {
   for (let user in users) {
     if (users[user]["email"] === (req.body.email) && users[user]["password"] === (req.body.password)) {
-      res.cookie(users[user]["user_id"])
+      console.log("###### users[user][user_id]: ", users[user]["id"])
+      res.cookie("user_id", users[user]["id"]);
+      res.redirect("/urls");
+    } else {
+      res.status(403).send();
     }
   }
-  res.redirect("/urls");
 });
 
 app.post("/logout", (req, res) => {
   res.clearCookie("user_id");
+  console.log("users after clearcookie: ", users)
   res.redirect("/urls");
 });
