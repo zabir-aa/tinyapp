@@ -29,7 +29,7 @@ const users = {
 }
 
 let urlDatabase = {
-  "9sm5xK": {longURL: "http://www.google.com", userID: "aj48Lw"},
+  "9sm5xK": {longURL: "http://www.google.com", userID: "aj48Lw"}, 
   "b2xVn2": {longURL: "http://www.lighthouselabs.ca", userID: "aj48Lw"}
 };
 
@@ -52,10 +52,14 @@ app.get("/urls", (req, res) => {
 });
 
 app.get("/urls/new", (req, res) => {
-  const templateVars = { 
+  if (req.cookies["user_id"]) {
+    const templateVars = { 
     user: users[req.cookies["user_id"]],
     urls: urlDatabase };
   res.render("urls_new", templateVars);
+  } else {
+    res.redirect("/login");
+  }
 });
 
 app.get("/register", (req, res) => {
@@ -99,7 +103,7 @@ app.post("/u/:shortURL", (req, res) => {
 
 app.post("/urls", (req, res) => {
   let shortURL = generateRandomString();
-  urlDatabase[shortURL] = req.body.longURL;
+  urlDatabase[shortURL] = {longURL: req.body.longURL, userID: req.cookies["user_id"]}
   console.log(urlDatabase);
   res.redirect(`/urls`);
 });
