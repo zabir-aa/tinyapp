@@ -10,6 +10,38 @@
 </head>
 <body>
   <%- include('partials/_header') %>
+  <% if(!user) { %>
+    <h1 style="text-align: center; margin: 1em;">Please log in to access this page!</h1>
+    <div class="card" style="margin:2em; border:dotted;">
+      <main style="margin: 2em;">
+        <h2>Log in</h2>
+        <div class="form-group">
+          <form class="login-form" action="/login" method="POST">
+            <label for="Email">Email address:</label>
+            <input class="form-control" type="email" name="email" placeholder="user@example.com" style="width: 300px; margin: 1em">
+            <label for="Password">Password:</label>
+            <input class="form-control" type="password" name="password" style="width: 300px; margin: 1em">
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+        </div>
+      </main>
+    </div>
+    <h1 style="text-align: center; margin: 1em;">Create account if you're a new user!</h1>
+    <div class="card" style="margin:2em; border:dotted;">
+      <main style="margin: 2em;">
+        <h2>Create account</h2>
+        <form class="form-group" action="/register" method="POST">
+          <div class="form-group">
+            <label for="Email">Email address:</label>
+            <input class="form-control" type="email" name="email" placeholder="user@example.com" style="width: 300px; margin: 1em">
+            <label for="Password">Password:</label>
+            <input class="form-control" type="password" name="password" style="width: 300px; margin: 1em">
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+        </form>
+      </main>
+    </div>    
+  <% } else { %>
   <main style="margin: 1em;">
     <h3>My URLs</h3>
     <table class="table">
@@ -41,6 +73,7 @@
       </tbody>
     </table>
   </main>
+  <% } %>
   <!-- Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
