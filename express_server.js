@@ -8,10 +8,7 @@ app.use(cookieParser())
 app.set("view engine", "ejs");
 
 const generateRandomString = function() {
-  let random = "";
-  for (let i = 0; i < 6; i++) {
-    random += (Math.floor((Math.random() * 9) + 1)).toString();
-  }
+  random = Math.random().toString(36).slice(2,9)
   return random;
 };
 
