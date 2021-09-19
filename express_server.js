@@ -42,11 +42,21 @@ app.get("/hello", (req, res) => {
   res.send("<html><body>Hello <b>World</b></body></html>\n");
 });
 */
+const urlsForUser = function(id){
+  let selectedURL = {};
+  for (url in urlDatabase) {
+    if (urlDatabase[url]["userID"] === id) {
+      selectedURL[url] = urlDatabase[url];
+    }
+  }
+  console.log(selectedURL);
+  return selectedURL;
+};
 
 app.get("/urls", (req, res) => {
   const templateVars = { 
     user: users[req.cookies["user_id"]],
-    urls: urlDatabase };
+    urls: urlsForUser(req.cookies["user_id"]) };
   console.log("PRINTING templateVars: \n", templateVars)
   res.render("urls_index", templateVars);
 });
