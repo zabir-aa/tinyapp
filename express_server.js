@@ -134,10 +134,8 @@ app.post("/urls", (req, res) => {
 
 app.post("/register", (req, res) => {
   let entryValidity = true;
-  for (let user in users) {
-    if (users[user]["email"] === (req.body.email) || req.body.email === "" || req.body.password === "") {
-      entryValidity = false;
-    }
+  if (getUserByEmail(req.body.email, users) || req.body.email === "" || req.body.password === "") {
+    entryValidity = false;
   }
   console.log("VALIDITY: ", entryValidity)
   if (entryValidity === false) {
@@ -157,12 +155,26 @@ app.post("/register", (req, res) => {
   }
 });
 
+/*
 app.post("/login", (req, res) => {
   for (let user in users) {
     if (req.body.email === users[user]["email"] && bcrypt.compareSync(req.body.password, users[user]["password"])) {
       req.session.user_id = users[user]["id"];
       return res.redirect("/urls");
     }
+  }
+  return res.status(403).send();
+});
+*/
+
+
+app.post("/login", (req, res) => {
+  user = getUserByEmail(req.body.email, users);
+  if (user) {
+    if (bcrypt.compareSync(req.body.password, user["password"])) {
+      req.session.user_id = user["id"];
+      return res.redirect("/urls");
+  }
   }
   return res.status(403).send();
 });
