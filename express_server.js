@@ -1,16 +1,23 @@
 const express = require("express");
 const app = express();
+app.set("view engine", "ejs");
 const PORT = 8080; // default port 8080
-const bcrypt = require('bcrypt');
-var cookieSession = require('cookie-session')
 
-const bodyParser = require("body-parser");
-app.use(bodyParser.urlencoded({extended: true}));
+var cookieSession = require('cookie-session')
 app.use(cookieSession({
   name: 'session',
   keys: ['key1', 'key2']
 }))
-app.set("view engine", "ejs");
+
+const bodyParser = require("body-parser");
+app.use(bodyParser.urlencoded({extended: true}));
+
+const bcrypt = require('bcrypt');
+
+// HELPER FUNCTIONS
+const {getUserByEmail} = require('./helpers');
+const {generateRandomString} = require('./helpers');
+const {urlsForUser} = require('./helpers');
 
 // Server initialization
 
@@ -38,31 +45,6 @@ let urlDatabase = {
   "b2xVn2": {longURL: "http://www.lighthouselabs.ca", userID: "aj48Lw"}
 };
 
-// GLOBAL FUNCTIONS
-
-const generateRandomString = function() {
-  random = Math.random().toString(36).slice(2,9)
-  return random;
-};
-
-const urlsForUser = function(id){
-  let selectedURL = {};
-  for (url in urlDatabase) {
-    if (urlDatabase[url]["userID"] === id) {
-      selectedURL[url] = urlDatabase[url];
-    }
-  }
-  console.log(selectedURL);
-  return selectedURL;
-};
-
-const  getUserByEmail = function (email, database) {
-  for (let user in database) {
-    if (database[user]["email"] === email) {
-      return database[user];
-    }
-  }
-};
 
 
 // GET ROUTES
@@ -70,7 +52,7 @@ const  getUserByEmail = function (email, database) {
 app.get("/urls", (req, res) => { // the homepage
   const templateVars = { 
     user: users[req.session["user_id"]],
-    urls: urlsForUser(req.session["user_id"]) };
+    urls: urlsForUser(req.session["user_id"], urlDatabase) };
   res.render("urls_index", templateVars);
 });
 
@@ -171,8 +153,8 @@ app.post("/login", (req, res) => {
 app.post("/login", (req, res) => {
   user = getUserByEmail(req.body.email, users);
   if (user) {
-    if (bcrypt.compareSync(req.body.password, user["password"])) {
-      req.session.user_id = user["id"];
+    if (bcrypt.compareSync(req.body.password, users[user]["password"])) {
+      req.session.user_id = users[user]["id"];
       return res.redirect("/urls");
   }
   }
@@ -180,11 +162,9 @@ app.post("/login", (req, res) => {
 });
 
 app.post("/urls/:shortURL/edit", (req, res) => {
-  if( Object.keys(urlsForUser(req.session.user_id)).includes(req.params.shortURL)) {
-    console.log ("urlsForUser: ", urlsForUser(req.session.user_id), "req.params.shortURL: ", req.params.shortURL);
+  if( Object.keys(urlsForUser(req.session.user_id, urlDatabase)).includes(req.params.shortURL)) {
     let toEdit = req.params.shortURL;
     urlDatabase[toEdit]["longURL"] = req.body.longURL;
-    console.log(urlDatabase);
     res.redirect(`/urls/`);
   } else {
     res.status(403).send();
@@ -192,7 +172,7 @@ app.post("/urls/:shortURL/edit", (req, res) => {
 });
 
 app.post("/urls/:shortURL/delete", (req, res) => {
-  if( Object.keys(urlsForUser(req.session.user_id)).includes(req.params.shortURL)) {
+  if( Object.keys(urlsForUser(req.session.user_id, urlDatabase)).includes(req.params.shortURL)) {
     let toDelete = req.params.shortURL;
     delete urlDatabase[toDelete];
     res.redirect("/urls");
