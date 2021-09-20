@@ -12,7 +12,7 @@
   <%- include('partials/_header') %>
   <% if(!user) { %>
     <h1 style="text-align: center; margin: 1em;">Please log in to access this page!</h1>
-    <div class="card" style="margin:2em; border:dotted;">
+    <div class="form-group" style="margin:2em;">
       <main style="margin: 2em;">
         <h2>Log in</h2>
         <div class="form-group">
@@ -26,8 +26,8 @@
         </div>
       </main>
     </div>
-    <h1 style="text-align: center; margin: 1em;">Create account if you're a new user!</h1>
-    <div class="card" style="margin:2em; border:dotted;">
+    <h1 style="text-align: center; margin: 1em;">Create an account if you're a new user!</h1>
+    <div class="form-group" style="margin:2em;">
       <main style="margin: 2em;">
         <h2>Create account</h2>
         <form class="form-group" action="/register" method="POST">
@@ -56,8 +56,8 @@
       <tbody>
         <% for(let url in urls) { %>
           <tr>
-            <td><a href="/u/<%= url %>"><%= url %></a></td>
-            <td><%= urls[url]["longURL"] %></td>
+            <td><a href="/urls/<%= url %>"><%= url %></a></td>
+            <td><a href="/u/<%= url %>"><%= urls[url]["longURL"] %></a></td>
             <td>
               <form action= "/u/<%= url %>" method="POST"> 
                   <button type="submit" class="btn btn-outline-primary">Edit</button>
