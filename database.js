@@ -1,23 +1,25 @@
-const users = { 
+// DATABASE OBJECTS
+
+const users = { // The user database object
   "userRandomID": {
-    id: "userRandomID", 
-    email: "user@example.com", 
+    id: "userRandomID",
+    email: "user@example.com",
     password: "purple-monkey-dinosaur"
   },
- "user2RandomID": {
-    id: "user2RandomID", 
-    email: "user2@example.com", 
+  "user2RandomID": {
+    id: "user2RandomID",
+    email: "user2@example.com",
     password: "dishwasher-funk"
   }
-}
+};
 
-let urlDatabase = {
-  "9sm5xK": {longURL: "http://www.google.com", userID: "aj48Lw"}, 
+let urlDatabase = { // The URL database object
+  "9sm5xK": {longURL: "http://www.google.com", userID: "aj48Lw"},
   "b2xVn2": {longURL: "http://www.lighthouselabs.ca", userID: "aj48Lw"}
 };
 
 
-module.exports ={
+module.exports = {
   users,
   urlDatabase
-}
+};
