@@ -21,11 +21,15 @@ New user registration page
 User login page
 
 
+
+
 The home page users will reach after logging in may have the following look:
 
 !["URL page after logging in"](https://github.com/zabir-aa/tinyapp/blob/master/docs/logged-in-urls-page.png)
 
 Home page outlook for new users
+
+
 
 
 Clicking "Create New URL" will take the users to the new URL creation page:
@@ -34,11 +38,15 @@ Clicking "Create New URL" will take the users to the new URL creation page:
 
 Create New URL page
 
+
+
 After creating a few URLs, the URL page will display those as following:
 
 !["URL page after adding some entry"](https://github.com/zabir-aa/tinyapp/blob/master/docs/logged-in-urls-list.png)
 
 URL page after adding some entry
+
+
 
 Clicking Edit will take the user to the URL edit / show page.
 
