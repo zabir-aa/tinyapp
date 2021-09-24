@@ -76,7 +76,7 @@ app.get("/urls/:shortURL", (req, res) => { // gets the shortURL view / edit page
     };
     res.render("urls_show", templateVars); // variable being passed to /urls/:shortURL template
   } else {
-    res.status(404).send(); // Send error : 404 in case of nonexistent entry
+    res.render("error_404"); // Send error : 404 in case of nonexistent entry
   }
   
 });
@@ -86,7 +86,7 @@ app.get("/u/:shortURL", (req, res) => { // the redirect to longURL route (/u/:sh
     const longURL = urlDatabase[req.params.shortURL]["longURL"]; // find associated longURL from the urlDatabase with the shortURL from user request
     res.redirect(longURL); // redirect to longURL (primary action of the service)
   } else {
-    res.status(404).send(); //// Sends error:404 for nonexistent shortURL
+    res.render("error_404"); //// Sends error:404 for nonexistent shortURL
   }
 });
 
@@ -95,11 +95,12 @@ app.get("/u/:shortURL", (req, res) => { // the redirect to longURL route (/u/:sh
 
 app.post("/register", (req, res) => { // new user registration request
   let entryValidity = true; // entry validity flag
-  if (getUserByEmail(req.body.email, users) || req.body.email === "" || req.body.password === "") { // check invalid entry
+  if (getUserByEmail(req.body.email, users) || req.body.email === "" || req.body.password === "") { // checks invalid entry
     entryValidity = false; // entry validity flag activation
   }
   if (entryValidity === false) {
-    res.status(400).send(); // Send error : 400 in case of invalid entry
+    res.render("error_400");
+    //res.status(400).send(); // Send error : 400 in case of invalid entry
   } else {
     let userID = generateRandomString(); // random user id generator
     const hashedPassword = bcrypt.hashSync(req.body.password, 10); // store hashed password
@@ -121,7 +122,7 @@ app.post("/login", (req, res) => { // login request
       return res.redirect("/urls"); // redirects to /urls (homepage)
     }
   }
-  return res.status(403).send(); // if email or password mismatched, sends error 403 : forbidden
+  return res.render("error_403"); // if email or password mismatched, sends error 403 : forbidden
 });
 
 app.post("/urls", (req, res) => { // create new shortURL request
@@ -135,7 +136,7 @@ app.post("/u/:shortURL", (req, res) => { // the longURL access via shortURL requ
     const shortURL = req.params.shortURL; // fetches the shortURL from user request
     res.redirect(`/urls/${shortURL}`); // redirects user to longURL
   } else {
-    res.status(404).send(); // Sends error:404 for nonexistent shortURL
+    res.render("error_404"); // Sends error:404 for nonexistent shortURL
   }
   
 });
@@ -146,7 +147,7 @@ app.post("/urls/:shortURL/edit", (req, res) => { // shortURL edit request
     urlDatabase[toEdit]["longURL"] = req.body.longURL; // replaces the associated longURL in database with user entry
     res.redirect(`/urls/`); // redirects to homepage
   } else {
-    res.status(403).send(); // in case of unauthorized user, sends 403: forbidden error
+    res.render("error_403"); // in case of unauthorized user, sends 403: forbidden error
   }
 });
 
@@ -156,7 +157,7 @@ app.post("/urls/:shortURL/delete", (req, res) => { // shortURL record delete req
     delete urlDatabase[toDelete]; // deletes the record from urlDatabase
     res.redirect("/urls"); // redirects to homepage
   } else {
-    res.status(403).send(); // in case of unauthorized user, sends 403: forbidden error
+    res.render("error_403"); // in case of unauthorized user, sends 403: forbidden error
   }
 });
 
