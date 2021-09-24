@@ -68,12 +68,17 @@ app.get("/login", (req, res) => { // gets the user login page (/login)
 });
 
 app.get("/urls/:shortURL", (req, res) => { // gets the shortURL view / edit page (/urls/:shortURL)
-  const templateVars = { // variable to pass to template
-    shortURL: req.params.shortURL, // includes the shortURL from user request
-    longURL: urlDatabase[req.params.shortURL]["longURL"], // also the associated longURL from urlDatabase
-    user: users[req.session["user_id"]], // and the specicic user object filtered from database with session "user_id"
-  };
-  res.render("urls_show", templateVars); // variable being passed to /urls/:shortURL template
+  if (Object.keys(urlsForUser(req.session.user_id, urlDatabase)).includes(req.params.shortURL)) { // checks if shortURL exists for the user
+    const templateVars = { // variable to pass to template
+      shortURL: req.params.shortURL, // includes the shortURL from user request
+      longURL: urlDatabase[req.params.shortURL]["longURL"], // also the associated longURL from urlDatabase
+      user: users[req.session["user_id"]], // and the specicic user object filtered from database with session "user_id"
+    };
+    res.render("urls_show", templateVars); // variable being passed to /urls/:shortURL template
+  } else {
+    res.status(404).send(); // Send error : 404 in case of nonexistent entry
+  }
+  
 });
 
 app.get("/u/:shortURL", (req, res) => { // the redirect to longURL route (/u/:shortURL)

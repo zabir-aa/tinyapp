@@ -20,7 +20,6 @@ const urlsForUser = function(id, database) { // filters the urlDatabase with use
       selectedURL[url] = database[url];
     }
   }
-  console.log(selectedURL);
   return selectedURL;
 };
 
