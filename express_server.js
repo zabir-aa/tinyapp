@@ -18,19 +18,11 @@ app.use(bodyParser.urlencoded({extended: true}));
 // BCRYPT
 const bcrypt = require('bcrypt');
 
-// Server initialization
-app.listen(PORT, () => {
-  console.log(`Example app listening on port ${PORT}!`);
-});
-
 // HELPER FUNCTIONS
-const {getUserByEmail} = require('./helpers');
-const {generateRandomString} = require('./helpers');
-const {urlsForUser} = require('./helpers');
+const {getUserByEmail, generateRandomString, urlsForUser} = require('./helpers');
 
 // DATABASE
-const {users} = require('./database');
-const {urlDatabase} = require('./database');
+const {users, urlDatabase} = require('./database');
 
 /*----------------------------*/
 // GET ROUTES
@@ -164,4 +156,9 @@ app.post("/urls/:shortURL/delete", (req, res) => { // shortURL record delete req
 app.post("/logout", (req, res) => { // session logout request
   req.session = null; // sets session cookie value to null
   res.redirect("/urls"); // redirects to homepage
+});
+
+// Server initialization
+app.listen(PORT, () => {
+  console.log(`Example app listening on port ${PORT}!`);
 });
