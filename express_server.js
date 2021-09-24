@@ -5,7 +5,7 @@ app.set("view engine", "ejs");
 const PORT = 8080; // default port 8080
 
 //COOKIE-SESSION MIDDLEWARE
-let cookieSession = require('cookie-session');
+const cookieSession = require('cookie-session');
 app.use(cookieSession({
   name: 'session',
   keys: ['key1', 'key2']
@@ -94,7 +94,7 @@ app.post("/register", (req, res) => { // new user registration request
     res.render("error_400");
     //res.status(400).send(); // Send error : 400 in case of invalid entry
   } else {
-    let userID = generateRandomString(); // random user id generator
+    const userID = generateRandomString(); // random user id generator
     const hashedPassword = bcrypt.hashSync(req.body.password, 10); // store hashed password
     users[userID] = { // store new user information to database
       id: userID,
@@ -118,7 +118,7 @@ app.post("/login", (req, res) => { // login request
 });
 
 app.post("/urls", (req, res) => { // create new shortURL request
-  let shortURL = generateRandomString(); // randomly generates the shortURL phrase
+  const shortURL = generateRandomString(); // randomly generates the shortURL phrase
   urlDatabase[shortURL] = {longURL: req.body.longURL, userID: req.session["user_id"]}; // stores shortURL and associated longURL in urlDatabase
   res.redirect(`/urls`); // redirects to homepage
 });
@@ -135,7 +135,7 @@ app.post("/u/:shortURL", (req, res) => { // the longURL access via shortURL requ
 
 app.post("/urls/:shortURL/edit", (req, res) => { // shortURL edit request
   if (Object.keys(urlsForUser(req.session.user_id, urlDatabase)).includes(req.params.shortURL)) { // checks if the owner user is making the request
-    let toEdit = req.params.shortURL; // fetches the shortURL to be edited from request
+    const toEdit = req.params.shortURL; // fetches the shortURL to be edited from request
     urlDatabase[toEdit]["longURL"] = req.body.longURL; // replaces the associated longURL in database with user entry
     res.redirect(`/urls/`); // redirects to homepage
   } else {
@@ -145,7 +145,7 @@ app.post("/urls/:shortURL/edit", (req, res) => { // shortURL edit request
 
 app.post("/urls/:shortURL/delete", (req, res) => { // shortURL record delete request
   if (Object.keys(urlsForUser(req.session.user_id, urlDatabase)).includes(req.params.shortURL)) { // checks if the owner user is making the request
-    let toDelete = req.params.shortURL; // fetches the shortURL to be deleted from request
+    const toDelete = req.params.shortURL; // fetches the shortURL to be deleted from request
     delete urlDatabase[toDelete]; // deletes the record from urlDatabase
     res.redirect("/urls"); // redirects to homepage
   } else {

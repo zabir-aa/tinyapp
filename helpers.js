@@ -9,7 +9,7 @@ const  getUserByEmail = function(email, database) { // finds the user by email a
 };
 
 const generateRandomString = function() { // generates a six character alphanumeric combination
-  let random = Math.random().toString(36).slice(2,9);
+  const random = Math.random().toString(36).slice(2,9);
   return random;
 };
 
