@@ -82,8 +82,12 @@ app.get("/urls/:shortURL", (req, res) => { // gets the shortURL view / edit page
 });
 
 app.get("/u/:shortURL", (req, res) => { // the redirect to longURL route (/u/:shortURL)
-  const longURL = urlDatabase[req.params.shortURL]["longURL"]; // find associated longURL from the urlDatabase with the shortURL from user request
-  res.redirect(longURL); // redirect to longURL (primary action of the service)
+  if (Object.keys(urlDatabase).includes(req.params.shortURL)) { // // Checks if the shortURL exists in the urlDatabase
+    const longURL = urlDatabase[req.params.shortURL]["longURL"]; // find associated longURL from the urlDatabase with the shortURL from user request
+    res.redirect(longURL); // redirect to longURL (primary action of the service)
+  } else {
+    res.status(404).send(); //// Sends error:404 for nonexistent shortURL
+  }
 });
 
 
@@ -127,8 +131,13 @@ app.post("/urls", (req, res) => { // create new shortURL request
 });
 
 app.post("/u/:shortURL", (req, res) => { // the longURL access via shortURL request (primary service)
-  const shortURL = req.params.shortURL; // fetches the shortURL from user request
-  res.redirect(`/urls/${shortURL}`); // redirects user to longURL
+  if (Object.keys(urlDatabase).includes(req.params.shortURL)) { // Checks if the shortURL exists in the urlDatabase
+    const shortURL = req.params.shortURL; // fetches the shortURL from user request
+    res.redirect(`/urls/${shortURL}`); // redirects user to longURL
+  } else {
+    res.status(404).send(); // Sends error:404 for nonexistent shortURL
+  }
+  
 });
 
 app.post("/urls/:shortURL/edit", (req, res) => { // shortURL edit request
